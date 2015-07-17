@@ -104,24 +104,30 @@
             <artifactId>validation-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
+		
         <dependency>
             <groupId>org.apache.phoenix</groupId>
             <artifactId>phoenix-core</artifactId>
-            <scope>provided</scope>
+			<scope>provided</scope>
 			<version>3.3.1</version>
             <exclusions>
                 <exclusion>  <!-- declare the exclusion here -->
                     <groupId>com.google.code.findbugs</groupId>
                     <artifactId>jsr305</artifactId>
                 </exclusion>
-				<exclusion>
-                    <groupId>org.apache.zookeeper</groupId>
-                    <artifactId>zookeeper</artifactId>
-                </exclusion>
+
 				<exclusion>
                     <groupId>org.apache.hbase</groupId>
                     <artifactId>hbase</artifactId>
+                </exclusion>
+				<exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-core</artifactId>
+                </exclusion>
+				
+				<exclusion>
+                    <groupId>org.apache.zookeeper</groupId>
+                    <artifactId>zookeeper</artifactId>
                 </exclusion>
 				<exclusion>
                     <groupId>org.antlr</groupId>
@@ -132,8 +138,32 @@
                     <artifactId>antlr-runtime</artifactId>
                 </exclusion>
 				<exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-core</artifactId>
+                    <groupId>net.sourceforge.findbugs</groupId>
+                    <artifactId>annotations</artifactId>
+                </exclusion>
+				<exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-csv</artifactId>
+                </exclusion>
+				<exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-core-asl</artifactId>
+                </exclusion>
+				<exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-mapper-asl</artifactId>
+                </exclusion>
+				<exclusion>
+                    <groupId>org.iq80.snappy</groupId>
+                    <artifactId>snappy</artifactId>
+                </exclusion>
+				<exclusion>
+                    <groupId>jline</groupId>
+                    <artifactId>jline</artifactId>
+                </exclusion>
+				<exclusion>
+                    <groupId>sqlline</groupId>
+                    <artifactId>sqlline</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
