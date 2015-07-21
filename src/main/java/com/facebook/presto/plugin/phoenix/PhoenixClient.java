@@ -13,16 +13,22 @@
  */
 package com.facebook.presto.plugin.phoenix;
 
+import static java.util.Locale.ENGLISH;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
-import java.util.HashSet;
 
 import javax.inject.Inject;
+
+import org.apache.phoenix.jdbc.PhoenixDriver;
 
 import com.facebook.presto.plugin.jdbc.BaseJdbcClient;
 import com.facebook.presto.plugin.jdbc.BaseJdbcConfig;
 import com.facebook.presto.plugin.jdbc.JdbcConnectorId;
-import org.apache.phoenix.jdbc.PhoenixDriver;
+import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableSet;
 
 public class PhoenixClient
         extends BaseJdbcClient
@@ -37,8 +43,24 @@ public class PhoenixClient
     @Override
     public Set<String> getSchemaNames()
     {
-        Set<String> def = new HashSet<>();
-        def.add("default");
-        return def;
+        try (Connection connection = driver.connect(connectionUrl, connectionProperties);
+                ResultSet resultSet = connection.getMetaData().getSchemas()) {
+            ImmutableSet.Builder<String> schemaNames = ImmutableSet.builder();
+            while (resultSet.next()) {
+                String schemaName = resultSet.getString("TABLE_SCHEM");
+                if (schemaName == null) {
+                    schemaName = "";
+                }
+                schemaName = schemaName.toLowerCase(ENGLISH);
+                // skip internal schemas
+                if (!schemaName.equals("information_schema")) {
+                    schemaNames.add(schemaName);
+                }
+            }
+            return schemaNames.build();
+        }
+        catch (SQLException e) {
+            throw Throwables.propagate(e);
+        }
     }
 }
