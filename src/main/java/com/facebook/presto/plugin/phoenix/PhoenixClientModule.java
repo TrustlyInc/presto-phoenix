@@ -13,13 +13,13 @@
  */
 package com.facebook.presto.plugin.phoenix;
 
-import static io.airlift.configuration.ConfigurationModule.bindConfig;
-
 import com.facebook.presto.plugin.jdbc.BaseJdbcConfig;
 import com.facebook.presto.plugin.jdbc.JdbcClient;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
+
+import static io.airlift.configuration.ConfigBinder.configBinder;
 
 public class PhoenixClientModule
         implements Module
@@ -28,6 +28,6 @@ public class PhoenixClientModule
     public void configure(Binder binder)
     {
         binder.bind(JdbcClient.class).to(PhoenixClient.class).in(Scopes.SINGLETON);
-        bindConfig(binder).to(BaseJdbcConfig.class);
+        configBinder(binder).bindConfig(BaseJdbcConfig.class);
     }
 }
